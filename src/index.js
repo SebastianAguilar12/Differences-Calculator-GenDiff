@@ -12,8 +12,8 @@ export default function gendiff(filepath1, filepath2) {
     const keysFileTwo = Object.keys(fileTwoAnalysis);
     const unionKeys = _.union(keysFileOne, keysFileTwo).sort();
     const result = unionKeys.reduce((acc, key) => {
-      const key1 = '-' + key;
-      const key2 = '+' + key;
+      const key1 = '- ' + key;
+      const key2 = '+ ' + key;
       if (fileOneAnalysis[key] === fileTwoAnalysis[key]) {
         acc[key] = fileOneAnalysis[key];
         return acc;
