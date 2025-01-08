@@ -7,6 +7,10 @@ import tseslint from "typescript-eslint";
 export default [
   { files: ["**/*.{js,mjs,cjs,ts}"] },
   {
+    env: {
+      browser: true,
+      node: true,
+    },
     languageOptions: {
       globals: {
         ...globals.node,
