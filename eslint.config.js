@@ -11,12 +11,10 @@ export default [
       browser: true,
       node: true,
     },
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
-    }
+    globals: {
+      ...globals.node,
+      ...globals.jest,
+    },
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
