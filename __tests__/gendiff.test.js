@@ -2,10 +2,10 @@ import path from 'node:path';
 import gendiff from '../src/index.js';
 
 test('gendiff with two .json extension files', () => {
-  const file1 = path.join(process.cwd(), 'file1.json');
-  const file2 = path.join(process.cwd(), 'file2.json');
-  const file3 = path.join(process.cwd(), 'file3.json');
-  const file4 = path.join(process.cwd(), 'file4.json');
+  const file1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
+  const file2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
+  const file3 = path.join(process.cwd(), '__fixtures__', 'file3.json');
+  const file4 = path.join(process.cwd(), '__fixtures__', 'file4.json');
   const comparision1 = gendiff(file1, file2);
   const comparision2 = gendiff(file3, file4);
   const expectedObject1 = {
