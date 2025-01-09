@@ -22,10 +22,10 @@
   },
   "homepage": "https://github.com/SebastianAguilar12/fullstack-javascript-project-103#readme",
   "dependencies": {
-    "@jest/globals": "^29.7.0",
     "@eslint/js": "^9.17.0",
-    "globals": "^15.14.0",
+    "@jest/globals": "^29.7.0",
     "commander": "^13.0.0",
+    "globals": "^15.14.0",
     "lint": "^1.1.2",
     "lodash": "^4.17.21"
   },
