@@ -19,6 +19,8 @@ export default [
       globals: {
         ...globals.node,
         ...globals.jest,
+        test: 'readonly',
+        expect: 'readonly',
       },
       parserOptions: {
         // Eslint doesn't supply ecmaVersion in `parser.js` `context.parserOptions`
