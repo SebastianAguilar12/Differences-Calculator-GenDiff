@@ -5,7 +5,8 @@
   "main": "gendiff.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "gendiff": "node gendiff.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "@jest/globals": "^29.7.0",
     "commander": "^13.0.0",
     "globals": "^15.14.0",
+    "js-yaml": "^4.1.0",
     "lint": "^1.1.2",
     "lodash": "^4.17.21"
   },

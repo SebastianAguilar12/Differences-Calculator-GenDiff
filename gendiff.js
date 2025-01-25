@@ -1,13 +1,14 @@
-import { Command, Option } from 'commander';
+import { Command } from 'commander';
 import gendiff from './src/index.js';
+
 const program = new Command();
 
 program
   .name('gendiff')
-  .arguments('<filepath1> <filepath2>')
   .description('Compares two configuration files and shows a difference.')
+  .arguments('<filepath1> <filepath2>')
   .version('0.0.1')
-  .addOption(new Option('-f, --format <type>', 'output format'))
+  .option('-f, --format <type>', 'output format')
   .action((filepath1, filepath2) => {
     console.log(gendiff(filepath1, filepath2));
   });
