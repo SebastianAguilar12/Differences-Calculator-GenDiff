@@ -26,7 +26,9 @@ function analizeFile(pathFile) {
   return null;
 }
 
-function stylish(value, reemplazador = ' ', cantidadEspacios = 4, isMainObject = true, depthLevel = 1) {
+function stylish(value, reemplazador = ' ', spaces = 4, isMainObject = true, depthLevel = 1) {
+  const keysArray = Object.keys(value);
+  let result = '';
   if (value === null) {
     return 'null';
   }
@@ -38,23 +40,23 @@ function stylish(value, reemplazador = ' ', cantidadEspacios = 4, isMainObject =
     case 'boolean':
       return value ? 'true' : 'false';
     case 'object':
-      const keysArray = Object.keys(value);
       if (keysArray.length === 0) {
         return '{}';
       }
-      let result = '';
       result += keysArray.reduce((acc, key, index) => {
-        const currentValue = _.isObject(value[key]) ? stylish(value[key], reemplazador, cantidadEspacios, false, depthLevel + 1) : value[key];
-        const indent = `${reemplazador.repeat(cantidadEspacios * depthLevel)}`;
+        const curr = value[key];
+        const isOb = _.isObject(curr);
+        const currVal = isOb ? stylish(curr, reemplazador, spaces, false, depthLevel + 1) : curr;
+        const indent = `${reemplazador.repeat(spaces * depthLevel)}`;
         const isDifference = key.startsWith('+') || key.startsWith('-');
         const separador = isDifference ? `${indent}${key}: ` : `${indent}  ${key}: `;
-        acc += `${separador}${currentValue}`;
+        let newAcc = `${acc}${separador}${currVal}`;
         if (index < keysArray.length - 1) {
-          acc += '\n';
+          newAcc = `${newAcc}\n`;
         }
-        return acc;
+        return newAcc;
       }, '');
-      return isMainObject ? `{\n${result}\n}`.trim() : `{\n${result}\n${reemplazador.repeat((cantidadEspacios * depthLevel) - 2)}}`.trim();
+      return isMainObject ? `{\n${result}\n}`.trim() : `{\n${result}\n${reemplazador.repeat((spaces * depthLevel) - 2)}}`.trim();
     default:
       return 0;
   }
