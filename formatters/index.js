@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { buildPath } from '../src/utils.js';
 
 function stylish(value, reemplazador = ' ', spaces = 4, isMainObject = true, depthLevel = 1) {
   const keysArray = Object.keys(value);
@@ -34,15 +35,6 @@ function stylish(value, reemplazador = ' ', spaces = 4, isMainObject = true, dep
     default:
       return 0;
   }
-}
-
-function buildPath(key, parentPath = '') {
-  let newKey = key;
-  if (_.startsWith(key, '+') || _.startsWith(key, '-')) {
-    const [, extractedKey] = _.split(key, ' ', 2);
-    newKey = extractedKey;
-  }
-  return parentPath ? `${parentPath}.${newKey}` : newKey;
 }
 
 function plain(diffObject) {
@@ -100,7 +92,12 @@ function plain(diffObject) {
   return iter(diffObject);
 }
 
+function json(object) {
+  return JSON.stringify(object, null, 2);
+}
+
 export {
   stylish,
   plain,
+  json,
 };

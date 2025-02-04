@@ -164,4 +164,54 @@ Property 'group3' was added with value: [complex value]`;
     const indentComparision = gendiff(indentFile1, indentFile2, formatters.plain);
     expect(indentComparision).toBe(expectedResult);
   });
+  test('test with json format', () => {
+    const objectJSON = {
+      common: {
+        '+ follow': false,
+        setting1: 'Value 1',
+        '- setting2': 200,
+        '- setting3': true,
+        '+ setting3': null,
+        '+ setting4': 'blah blah',
+        '+ setting5': {
+          key5: 'value5',
+        },
+        setting6: {
+          doge: {
+            '- wow': '',
+            '+ wow': 'so much',
+          },
+          key: 'value',
+          '+ ops': 'vops',
+        },
+      },
+      group1: {
+        '- baz': 'bas',
+        '+ baz': 'bars',
+        foo: 'bar',
+        '- nest': {
+          key: 'value',
+        },
+        '+ nest': 'str',
+      },
+      '- group2': {
+        abc: 12345,
+        deep: {
+          id: 45,
+        },
+      },
+      '+ group3': {
+        deep: {
+          id: {
+            number: 45,
+          },
+        },
+        fee: 100500,
+      },
+    };
+    const file1 = path.join(process.cwd(), '__fixtures__', 'indentFile1.json');
+    const file2 = path.join(process.cwd(), '__fixtures__', 'indentFile2.json');
+    const twoFilesComparision = gendiff(file1, file2, formatters.json);
+    expect(twoFilesComparision).toBe(formatters.json(objectJSON));
+  });
 });

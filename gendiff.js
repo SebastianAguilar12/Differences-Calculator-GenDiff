@@ -17,6 +17,9 @@ program
       case 'plain':
         formatName = formatter.plain;
         break;
+      case 'json':
+        formatName = formatter.json;
+        break;
       default:
         formatName = formatter.stylish;
         break;

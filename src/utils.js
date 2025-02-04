@@ -55,7 +55,17 @@ function diff(file1, file2) {
   return 0;
 }
 
+function buildPath(key, parentPath = '') {
+  let newKey = key;
+  if (_.startsWith(key, '+') || _.startsWith(key, '-')) {
+    const [, extractedKey] = _.split(key, ' ', 2);
+    newKey = extractedKey;
+  }
+  return parentPath ? `${parentPath}.${newKey}` : newKey;
+}
+
 export {
   analizeFile,
   diff,
+  buildPath,
 };
