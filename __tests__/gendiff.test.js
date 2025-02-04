@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { describe } from 'node:test';
 import gendiff from '../src/index.js';
-import * as functions from '../src/utils.js';
+import * as formatters from '../formatters/index.js';
 
 test('gendiff with two .json extension files', () => {
   const file1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
@@ -27,8 +27,8 @@ test('gendiff with two .json extension files', () => {
     '- nombre': 'Sebastian',
     '+ nombre': 'María Fernanda',
   };
-  expect(comparision1).toBe(functions.stylish(expectedObject1));
-  expect(comparision2).toBe(functions.stylish(expectedObject2));
+  expect(comparision1).toBe(formatters.stylish(expectedObject1));
+  expect(comparision2).toBe(formatters.stylish(expectedObject2));
 });
 
 test('gendiff with two .yml extension files', () => {
@@ -43,7 +43,7 @@ test('gendiff with two .yml extension files', () => {
     '+ timeout': 20,
     '+ verbose': true,
   };
-  expect(ymlComparision1).toEqual(functions.stylish(expectedYml));
+  expect(ymlComparision1).toEqual(formatters.stylish(expectedYml));
 });
 
 describe('test indent files', () => {
@@ -95,7 +95,7 @@ describe('test indent files', () => {
         fee: 100500,
       },
     };
-    expect(indentFilesDiff).toEqual(functions.stylish(expectedIndent));
+    expect(indentFilesDiff).toEqual(formatters.stylish(expectedIndent));
   });
   test('testing indent .yml files', () => {
     const indentYmlFile1 = path.join(process.cwd(), 'parsers', 'indentFile1.yaml');
@@ -145,6 +145,23 @@ describe('test indent files', () => {
         fee: 100500,
       },
     };
-    expect(indentYmlDiff).toEqual(functions.stylish(expectedIndent));
+    expect(indentYmlDiff).toEqual(formatters.stylish(expectedIndent));
+  });
+  test('testing .json indent files with plain formatter', () => {
+    const expectedResult = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
+    const indentFile1 = path.join(process.cwd(), '__fixtures__', 'indentFile1.json');
+    const indentFile2 = path.join(process.cwd(), '__fixtures__', 'indentFile2.json');
+    const indentComparision = gendiff(indentFile1, indentFile2, formatters.plain);
+    expect(indentComparision).toBe(expectedResult);
   });
 });
