@@ -1,7 +1,8 @@
 import path from 'node:path';
 import * as functions from './utils.js';
+import * as formatter from '../formatters/index.js';
 
-export default function gendiff(filepath1, filepath2, formatter = functions.stylish) {
+export default function gendiff(filepath1, filepath2, formatName = formatter.stylish) {
   const extFile1 = path.extname(filepath1);
   const extFile2 = path.extname(filepath2);
   let pathFileOne = '';
@@ -16,5 +17,5 @@ export default function gendiff(filepath1, filepath2, formatter = functions.styl
   const fileOneAnalysis = functions.analizeFile(pathFileOne);
   const fileTwoAnalysis = functions.analizeFile(pathFileTwo);
   const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
-  return formatter(object);
+  return formatName(object);
 }
