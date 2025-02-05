@@ -7,6 +7,10 @@
   "description": "[![Actions Status](https://github.com/SebastianAguilar12/fullstack-javascript-project-103/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/SebastianAguilar12/fullstack-javascript-project-103/actions)",
   "main": "gendiff.js",
   "type": "module",
+  "jest": {
+    "transform": {},
+    "testEnvironment": "node"
+  },
   "scripts": {
     "test": "jest",
     "gendiff": "node gendiff.js"
