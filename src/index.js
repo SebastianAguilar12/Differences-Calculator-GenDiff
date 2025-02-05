@@ -6,9 +6,6 @@ export default function gendiff(filepath1, filepath2, formatName = stylish) {
   if (filepath1 === undefined || filepath2 === undefined) {
     return 'Error: File paths are missing.';
   }
-  if (typeof formatName !== 'function') {
-    throw new TypeError('formatName must be a function');
-  }
   const extFile1 = path.extname(filepath1);
   const extFile2 = path.extname(filepath2);
   const pathFileOne = ((ext) => {
@@ -18,7 +15,7 @@ export default function gendiff(filepath1, filepath2, formatName = stylish) {
     if (ext === '.yaml' || ext === '.yml') {
       return path.resolve(process.cwd(), 'parsers', filepath1);
     }
-    return '';
+    return filepath1;
   });
   const pathFileTwo = ((extension) => {
     if (extension === '.json') {
@@ -27,10 +24,14 @@ export default function gendiff(filepath1, filepath2, formatName = stylish) {
     if (extension === '.yaml' || extension === '.yml') {
       return path.resolve(process.cwd(), 'parsers', filepath2);
     }
-    return '';
+    return filepath2;
   });
   const fileOneAnalysis = functions.analizeFile(pathFileOne(extFile1));
   const fileTwoAnalysis = functions.analizeFile(pathFileTwo(extFile2));
   const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
+  if (typeof formatName !== 'function') {
+    console.error('formatName must be a function');
+    return stylish(object);
+  }
   return formatName(object);
 }
