@@ -3,6 +3,12 @@ import * as functions from './utils.js';
 import stylish from './formatters/stylish.js';
 
 export default function gendiff(filepath1, filepath2, formatName = stylish) {
+  if (filepath1 === undefined || filepath2 === undefined) {
+    return 'Error: File paths are missing.';
+  }
+  if (typeof formatName !== 'function') {
+    throw new TypeError('formatName must be a function');
+  }
   const extFile1 = path.extname(filepath1);
   const extFile2 = path.extname(filepath2);
   const pathFileOne = ((ext) => {
