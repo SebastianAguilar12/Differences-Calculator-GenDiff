@@ -1,5 +1,5 @@
 {
-  "name": "@codica/code",
+  "name": "@hexlet/code",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
