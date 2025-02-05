@@ -1,6 +1,8 @@
 import path from 'node:path';
 import * as functions from './utils.js';
 import stylish from './formatters/stylish.js';
+import plain from './formatters/plain.js';
+import json from './formatters/index.js';
 
 export default function gendiff(filepath1, filepath2, formatName = stylish) {
   if (filepath1 === undefined || filepath2 === undefined) {
@@ -29,10 +31,14 @@ export default function gendiff(filepath1, filepath2, formatName = stylish) {
   const fileOneAnalysis = functions.analizeFile(pathFileOne(extFile1));
   const fileTwoAnalysis = functions.analizeFile(pathFileTwo(extFile2));
   const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
-  console.log(typeof formatName);
-  if (typeof formatName !== 'function') {
-    console.error('formatName must be a function');
-    return stylish(object);
+  switch (formatName) {
+    case 'stylish':
+      return stylish(object);
+    case 'plain':
+      return plain(object);
+    case 'json':
+      return json(object);
+    default:
+      return stylish(object);
   }
-  return formatName(object);
 }

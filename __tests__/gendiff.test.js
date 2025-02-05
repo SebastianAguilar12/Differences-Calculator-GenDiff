@@ -7,7 +7,7 @@ import json from '../src/formatters/index.js';
 test('testing indent .json files', () => {
   const indentFile1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const indentFile2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
-  const indentFilesDiff = gendiff(indentFile1, indentFile2, stylish);
+  const indentFilesDiff = gendiff(indentFile1, indentFile2, 'stylish');
   const expectedIndent = {
     common: {
       '+ follow': false,
@@ -57,7 +57,7 @@ test('testing indent .json files', () => {
 test('testing indent .yml files', () => {
   const indentYmlFile1 = path.join(process.cwd(), 'parsers', 'file1.yaml');
   const indentYmlFile2 = path.join(process.cwd(), 'parsers', 'file2.yaml');
-  const indentYmlDiff = gendiff(indentYmlFile1, indentYmlFile2, stylish);
+  const indentYmlDiff = gendiff(indentYmlFile1, indentYmlFile2, 'stylish');
   const expectedIndent = {
     common: {
       '+ follow': false,
@@ -118,7 +118,7 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
   const indentFile1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const indentFile2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
-  const indentComparision = gendiff(indentFile1, indentFile2, plain);
+  const indentComparision = gendiff(indentFile1, indentFile2, 'plain');
   console.log(typeof plain);
   expect(indentComparision).toBe(expectedResult);
 });
@@ -136,7 +136,7 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
   const indentYMLFile1 = path.join(process.cwd(), 'parsers', 'file1.yml');
   const indentYMLFile2 = path.join(process.cwd(), 'parsers', 'file2.yml');
-  const indentComparision = gendiff(indentYMLFile1, indentYMLFile2, plain);
+  const indentComparision = gendiff(indentYMLFile1, indentYMLFile2, 'plain');
   expect(indentComparision).toBe(expectedResult);
 });
 test('test with json format', () => {
@@ -186,6 +186,6 @@ test('test with json format', () => {
   };
   const file1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const file2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
-  const twoFilesComparision = gendiff(file1, file2, json);
+  const twoFilesComparision = gendiff(file1, file2, 'json');
   expect(twoFilesComparision).toBe(json(objectJSON));
 });

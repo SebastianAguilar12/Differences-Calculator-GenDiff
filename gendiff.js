@@ -18,10 +18,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     .action((filepath1, filepath2, options) => {
       const { format } = options;
       const formatName = ((formatType) => {
-        if (formatType === 'json' && typeof formatType === 'string') {
+        if (formatType === 'json') {
           return json;
         }
-        if (formatType === 'plain' && typeof formatType === 'string') {
+        if (formatType === 'plain') {
           return plain;
         }
         return stylish;
