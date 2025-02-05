@@ -1,5 +1,8 @@
 {
   "name": "@codica/code",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/SebastianAguilar12/fullstack-javascript-project-103/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/SebastianAguilar12/fullstack-javascript-project-103/actions)",
   "main": "gendiff.js",

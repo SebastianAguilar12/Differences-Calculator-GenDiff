@@ -9,3 +9,6 @@ Link ejemplo de fincionamiento con archivos indentados https://asciinema.org/a/6
 Link funcionamiento indent Files: https://asciinema.org/a/I9UUhV5dHl9ESYyYR6MYO3r1p
 Link funcionamiento formato plain: https://asciinema.org/a/XIDu2capd1P6DWgXeyEMrrfP8
 Link json format working: https://asciinema.org/a/SfEHkSfT1dXH71Vwtggho23my
+[main 6a4411a] creating and posting asciinema json format link
+ 2 files changed, 305 insertions(+)
+ create mode 100644 json-format-working

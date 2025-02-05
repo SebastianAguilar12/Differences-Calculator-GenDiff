@@ -1,6 +1,10 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
-import gendiff from './src/index.js';
-import * as formatter from './formatters/index.js';
+import gendiff from '../src/index.js';
+import stylish from '../src/formatters/stylish.js';
+import json from '../src/formatters/index.js';
+import plain from '../src/formatters/plain.js';
 
 const program = new Command();
 
@@ -12,18 +16,15 @@ program
   .option('-f, --format [type]', 'output format (default: "stylish")')
   .action((filepath1, filepath2, options) => {
     const { format } = options;
-    let formatName = '';
-    switch (format) {
-      case 'plain':
-        formatName = formatter.plain;
-        break;
-      case 'json':
-        formatName = formatter.json;
-        break;
-      default:
-        formatName = formatter.stylish;
-        break;
-    }
+    const formatName = ((formatType) => {
+      if (formatType === 'json') {
+        return json;
+      }
+      if (formatType === 'plain') {
+        return plain;
+      }
+      return stylish;
+    })(format);
     console.log(gendiff(filepath1, filepath2, formatName));
   });
 
