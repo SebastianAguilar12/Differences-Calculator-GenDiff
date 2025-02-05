@@ -4,7 +4,7 @@ import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
 import json from './formatters/index.js';
 
-export default function gendiff(filepath1, filepath2, formatName = stylish) {
+export default function gendiff(filepath1, filepath2, formatName = 'stylish') {
   if (filepath1 === undefined || filepath2 === undefined) {
     return 'Error: File paths are missing.';
   }
