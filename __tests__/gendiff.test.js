@@ -9,7 +9,7 @@ describe('test indent files', () => {
   test('testing indent .json files', () => {
     const indentFile1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
     const indentFile2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
-    const indentFilesDiff = gendiff(indentFile1, indentFile2);
+    const indentFilesDiff = gendiff(indentFile1, indentFile2, stylish);
     const expectedIndent = {
       common: {
         '+ follow': false,
@@ -59,7 +59,7 @@ describe('test indent files', () => {
   test('testing indent .yml files', () => {
     const indentYmlFile1 = path.join(process.cwd(), 'parsers', 'file1.yaml');
     const indentYmlFile2 = path.join(process.cwd(), 'parsers', 'file2.yaml');
-    const indentYmlDiff = gendiff(indentYmlFile1, indentYmlFile2);
+    const indentYmlDiff = gendiff(indentYmlFile1, indentYmlFile2, stylish);
     const expectedIndent = {
       common: {
         '+ follow': false,
