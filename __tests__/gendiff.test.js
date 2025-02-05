@@ -1,5 +1,4 @@
 import path from 'node:path';
-import { describe } from 'node:test';
 import gendiff from '../src/index.js';
 import stylish from '../src/formatters/stylish.js';
 import plain from '../src/formatters/plain.js';

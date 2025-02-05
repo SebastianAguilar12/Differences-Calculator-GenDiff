@@ -9,7 +9,10 @@
   "type": "module",
   "jest": {
     "transform": {},
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "#(.*)": "<rootDir>/node_modules/$1"
+    }
   },
   "scripts": {
     "test": "jest",
