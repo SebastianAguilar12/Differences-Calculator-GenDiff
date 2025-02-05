@@ -32,4 +32,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   program.parse();
 }
 
-export default gendiff;
+export default function execApp(filepath1, filepath2, format = 'stylish') {
+  return gendiff(filepath1, filepath2, format);
+}
