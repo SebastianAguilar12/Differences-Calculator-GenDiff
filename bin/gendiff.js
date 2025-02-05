@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import gendiff from './src/index.js';
-import stylish from './src/formatters/stylish.js';
-import json from './src/formatters/index.js';
-import plain from './src/formatters/plain.js';
+import gendiff from '../src/index.js';
+import stylish from '../src/formatters/stylish.js';
+import json from '../src/formatters/index.js';
+import plain from '../src/formatters/plain.js';
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const program = new Command();

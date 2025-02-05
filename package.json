@@ -1,5 +1,6 @@
 {
   "name": "@hexlet/code",
+  "private": true,
   "bin": {
     "gendiff": "gendiff.js"
   },

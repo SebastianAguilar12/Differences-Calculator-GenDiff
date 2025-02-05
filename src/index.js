@@ -29,6 +29,7 @@ export default function gendiff(filepath1, filepath2, formatName = stylish) {
   const fileOneAnalysis = functions.analizeFile(pathFileOne(extFile1));
   const fileTwoAnalysis = functions.analizeFile(pathFileTwo(extFile2));
   const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
+  console.log(typeof formatName);
   if (typeof formatName !== 'function') {
     console.error('formatName must be a function');
     return stylish(object);

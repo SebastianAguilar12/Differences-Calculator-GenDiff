@@ -119,6 +119,7 @@ Property 'group3' was added with value: [complex value]`;
   const indentFile1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const indentFile2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
   const indentComparision = gendiff(indentFile1, indentFile2, plain);
+  console.log(typeof plain);
   expect(indentComparision).toBe(expectedResult);
 });
 test('testing .yml indent files with plain formatter', () => {
