@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default function stylish(value, reemplazador = ' ', spaces = 4, isMainObject = true, depthLevel = 1) {
+export default function stylish(value, reemplazador = ' ', spaces = 3, isMainObject = true, depthLevel = 1) {
   const keysArray = Object.keys(value);
   if (value === null) {
     return 'null';
