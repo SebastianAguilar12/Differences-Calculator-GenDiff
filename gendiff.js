@@ -47,5 +47,10 @@ if (process.env.NODE_ENV !== 'test') {
 
 export default function execApp(filepath1, filepath2, format = 'stylish') {
   const formatter = getFormatter(format);
-  return gendiff(filepath1, filepath2, formatter);
+  console.log('Filepath1:', filepath1);
+  console.log('Filepath2:', filepath2);
+  console.log('Selected formatter:', formatter.name);
+  const result = gendiff(filepath1, filepath2, formatter);
+  console.log('Result:', result);
+  return result;
 }
