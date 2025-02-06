@@ -55,8 +55,8 @@ test('testing indent .json files', () => {
   expect(indentFilesDiff).toEqual(stylish(expectedIndent));
 });
 test('testing indent .yml files', () => {
-  const indentYmlFile1 = path.join(process.cwd(), 'parsers', 'file1.yaml');
-  const indentYmlFile2 = path.join(process.cwd(), 'parsers', 'file2.yaml');
+  const indentYmlFile1 = path.join(process.cwd(), '__fixtures__', 'file1.yaml');
+  const indentYmlFile2 = path.join(process.cwd(), '__fixtures__', 'file2.yaml');
   const indentYmlDiff = gendiff(indentYmlFile1, indentYmlFile2, 'stylish');
   const expectedIndent = {
     common: {
@@ -134,8 +134,8 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
-  const indentYMLFile1 = path.join(process.cwd(), 'parsers', 'file1.yml');
-  const indentYMLFile2 = path.join(process.cwd(), 'parsers', 'file2.yml');
+  const indentYMLFile1 = path.join(process.cwd(), '__fixtures__', 'file1.yml');
+  const indentYMLFile2 = path.join(process.cwd(), '__fixtures__', 'file2.yml');
   const indentComparision = gendiff(indentYMLFile1, indentYMLFile2, 'plain');
   expect(indentComparision).toBe(expectedResult);
 });

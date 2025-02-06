@@ -10,26 +10,14 @@ export default function gendiff(filepath1, filepath2, formatName = 'stylish') {
   }
   const extFile1 = path.extname(filepath1);
   const extFile2 = path.extname(filepath2);
-  const pathFileOne = ((ext) => {
-    if (ext === '.json') {
-      return path.resolve(process.cwd(), '__fixtures__', filepath1);
+  const getPathFile = ((filepath, ext) => {
+    if (ext === '.json' || ext === '.yml' || ext === '.yaml') {
+      return path.resolve(process.cwd(), '__fixtures__', filepath);
     }
-    if (ext === '.yaml' || ext === '.yml') {
-      return path.resolve(process.cwd(), 'parsers', filepath1);
-    }
-    return filepath1;
+    return filepath;
   });
-  const pathFileTwo = ((extension) => {
-    if (extension === '.json') {
-      return path.resolve(process.cwd(), '__fixtures__', filepath2);
-    }
-    if (extension === '.yaml' || extension === '.yml') {
-      return path.resolve(process.cwd(), 'parsers', filepath2);
-    }
-    return filepath2;
-  });
-  const fileOneAnalysis = functions.analizeFile(pathFileOne(extFile1));
-  const fileTwoAnalysis = functions.analizeFile(pathFileTwo(extFile2));
+  const fileOneAnalysis = functions.analizeFile(getPathFile(filepath1, extFile1));
+  const fileTwoAnalysis = functions.analizeFile(getPathFile(filepath2, extFile2));
   const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
   if (typeof formatName === 'function') {
     return formatName(object);
