@@ -6,6 +6,25 @@ import stylish from './src/formatters/stylish.js';
 import json from './src/formatters/index.js';
 import plain from './src/formatters/plain.js';
 
+const getFormatter = (format) => {
+  if (format === undefined) {
+    return stylish;
+  }
+  if (typeof format === 'function') {
+    return format;
+  }
+  switch (format) {
+    case 'stylish':
+      return stylish;
+    case 'json':
+      return json;
+    case 'plain':
+      return plain;
+    default:
+      return stylish;
+  }
+};
+
 const program = new Command();
 
 program
@@ -16,18 +35,7 @@ program
   .option('-f, --format [type]', 'output format', 'stylish')
   .action((filepath1, filepath2, options) => {
     const { format } = options;
-    const formatName = ((formatType) => {
-      switch (formatType) {
-        case 'stylish':
-          return stylish;
-        case 'json':
-          return json;
-        case 'plain':
-          return plain;
-        default:
-          return stylish;
-      }
-    })(format);
+    const formatName = getFormatter(format);
     console.log('Selected formatter: ', formatName);
     const diff = gendiff(filepath1, filepath2, formatName);
     console.log(diff);
@@ -38,17 +46,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export default function execApp(filepath1, filepath2, format = 'stylish') {
-  const formatter = (() => {
-    switch (format) {
-      case 'stylish':
-        return stylish;
-      case 'json':
-        return json;
-      case 'plain':
-        return plain;
-      default:
-        return stylish;
-    }
-  })();
+  const formatter = getFormatter(format);
   return gendiff(filepath1, filepath2, formatter);
 }
