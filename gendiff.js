@@ -33,7 +33,9 @@ program
     console.log(diff);
   });
 
-program.parse();
+if (process.env.NODE_ENV !== 'test') {
+  program.parse(process.argv);
+}
 
 export default function execApp(filepath1, filepath2, format = 'stylish') {
   const formatter = (() => {
