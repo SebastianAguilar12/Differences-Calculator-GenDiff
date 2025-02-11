@@ -3,27 +3,21 @@ import yaml from 'js-yaml';
 import path from 'node:path';
 
 export default function analyzeFile(pathFile) {
-  try {
-    const extensionFile = path.extname(pathFile);
-    let readingFile;
+  const extensionFile = path.extname(pathFile);
+  const readingFile = fs.readFileSync(pathFile, 'utf8');
+  const analyzedFile = (file) => {
     switch (extensionFile) {
       case ('.json'):
-        readingFile = fs.readFileSync(pathFile, 'utf8');
-        return JSON.parse(readingFile);
+        return JSON.parse(file);
       case ('.yml'):
-        readingFile = yaml.load(fs.readFileSync(pathFile, 'utf8'));
-        return readingFile;
+        return yaml.load(file);
       case ('.yaml'):
-        readingFile = yaml.load(fs.readFileSync(pathFile, 'utf8'));
-        return readingFile;
+        return yaml.load(file);
       case ('.txt'):
-        readingFile = fs.readFileSync(pathFile, 'utf8');
-        return readingFile;
+        return file;
       default:
         return null;
     }
-  } catch (error) {
-    console.error(error);
-  }
-  return null;
+  };
+  return analyzedFile(readingFile);
 }

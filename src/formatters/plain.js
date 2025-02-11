@@ -47,10 +47,10 @@ const renderFunctions = {
   [UNCHANGED_VALUE]: () => [],
 };
 
-export default (ast) => {
+export default function plain(ast) {
   const formatPath = (node, parentKey, pathFormat) => {
     const formattedNode = renderFunctions[node.type](node, parentKey, pathFormat);
     return Array.isArray(formattedNode) ? formattedNode : [formattedNode];
   };
   return formatPath(ast, '', formatPath).join('\n');
-};
+}
