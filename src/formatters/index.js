@@ -1,3 +1,5 @@
 export default function json(object) {
-  return JSON.stringify(object, null, 2);
+  const children = object.children || [];
+  const type = object.type || '';
+  return { children, type };
 }

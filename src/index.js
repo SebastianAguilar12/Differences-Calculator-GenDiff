@@ -1,5 +1,6 @@
 import path from 'node:path';
-import * as functions from './utils.js';
+import analyzeFile from './utils.js';
+import getDiff from './diff.js';
 import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
 import json from './formatters/index.js';
@@ -16,9 +17,9 @@ export default function gendiff(filepath1, filepath2, formatName = 'stylish') {
     }
     return filepath;
   });
-  const fileOneAnalysis = functions.analizeFile(getPathFile(filepath1, extFile1));
-  const fileTwoAnalysis = functions.analizeFile(getPathFile(filepath2, extFile2));
-  const object = functions.diff(fileOneAnalysis, fileTwoAnalysis);
+  const fileOneAnalysis = analyzeFile(getPathFile(filepath1, extFile1));
+  const fileTwoAnalysis = analyzeFile(getPathFile(filepath2, extFile2));
+  const object = getDiff(fileOneAnalysis, fileTwoAnalysis);
   if (typeof formatName === 'function') {
     return formatName(object);
   }

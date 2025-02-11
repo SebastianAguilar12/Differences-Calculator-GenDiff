@@ -1,51 +1,49 @@
 import _ from 'lodash';
-
-export default function stylish(value, reemplazador = ' ', spaces = 2, isMainObject = true, depthLevel = 1) {
-  const keysArray = Object.keys(value);
-  if (value === null) {
-    return 'null';
-  }
-  switch (typeof value) {
-    case 'string':
-      return value;
-    case 'number':
-      return `${value}`;
-    case 'boolean':
-      return value ? 'true' : 'false';
-    case 'object':
-      if (value && Array.isArray(value)) {
-        const indent = `${reemplazador.repeat(spaces * depthLevel)}`;
-        const formattedItems = value.map((item) => {
-          if (_.isObject(item) && item !== null) {
-            return stylish(item, reemplazador, spaces, false, depthLevel + 1);
-          }
-          return item;
-        });
-        return `[\n${formattedItems.map((item) => `${indent}  ${item}`).join('\n')}\n${indent}]`;
-      }
-      if (keysArray.length === 0) {
-        return '{}';
-      }
-      return isMainObject
-        ? `{\n${keysArray.reduce((acc, key, index) => {
-          const curr = value[key];
-          const isOb = _.isObject(curr);
-          const currVal = isOb ? stylish(curr, reemplazador, spaces, false, depthLevel + 2) : curr;
-          const indent = `${reemplazador.repeat(spaces * depthLevel)}`;
-          const isDifference = key.startsWith('+') || key.startsWith('-');
-          const separador = isDifference ? `${indent}${key}: ` : `${indent}  ${key}: `;
-          return `${acc}${separador}${currVal}${index < keysArray.length - 1 ? '\n' : ''}`;
-        }, '')}\n}`.trim()
-        : `{\n${keysArray.reduce((acc, key, index) => {
-          const curr = value[key];
-          const isOb = _.isObject(curr);
-          const currVal = isOb ? stylish(curr, reemplazador, spaces, false, depthLevel + 2) : curr;
-          const indent = `${reemplazador.repeat(spaces * depthLevel)}`;
-          const isDifference = key.startsWith('+') || key.startsWith('-');
-          const separador = isDifference ? `${indent}${key}: ` : `${indent}  ${key}: `;
-          return `${acc}${separador}${currVal}${index < keysArray.length - 1 ? '\n' : ''}`;
-        }, '')}\n${reemplazador.repeat((spaces * depthLevel) - 2)}}`.trim();
-    default:
-      return 0;
-  }
+import {
+  ROOT_VALUE,
+  NESTED_VALUE,
+  ADD_VALUE,
+  DELETED_VALUE,
+  UNCHANGED_VALUE,
+  CHANGED_VALUE,
 }
+  from '../constants.js';
+
+const getIndentation = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount - 2);
+
+const formatValue = (data, depth, renderFunctions) => {
+  if (!_.isObject(data)) return `${data}`;
+  const entries = Object.entries(data).map(([key, value]) => {
+    const unchangedValue = renderFunctions[UNCHANGED_VALUE]({ key, value }, depth + 1);
+    return unchangedValue;
+  });
+  return `{\n${entries.join('\n')}\n${getIndentation(depth)}  }`;
+};
+
+const renderFunctions = {
+  [ROOT_VALUE]: ({ children }, depth, iterate) => {
+    const renderedChildren = children.flatMap((child) => iterate(child, depth + 1));
+    return `{\n${renderedChildren.join('\n')}\n}`;
+  },
+  [NESTED_VALUE]: ({ key, children }, depth, iterate) => {
+    const nestedChildren = children.flatMap((child) => iterate(child, depth + 1));
+    return `${getIndentation(depth)}  ${key}: {\n${nestedChildren.join('\n')}\n${getIndentation(depth)}  }`;
+  },
+  [ADD_VALUE]: ({ key, value }, depth) => `${getIndentation(depth)}+ ${key}: ${formatValue(value, depth, renderFunctions)}`,
+  [DELETED_VALUE]: ({ key, value }, depth) => `${getIndentation(depth)}- ${key}: ${formatValue(value, depth, renderFunctions)}`,
+  [UNCHANGED_VALUE]: ({ key, value }, depth) => `${getIndentation(depth)}  ${key}: ${formatValue(value, depth, renderFunctions)}`,
+  [CHANGED_VALUE]: ({ key, value1, value2 }, depth) => {
+    const renderedValue1 = formatValue(value1, depth, renderFunctions);
+    const renderedValue2 = formatValue(value2, depth, renderFunctions);
+    return [
+      `${getIndentation(depth)}- ${key}: ${renderedValue1}`,
+      `${getIndentation(depth)}+ ${key}: ${renderedValue2}`,
+    ].join('\n');
+  },
+};
+const renderAST = (ast) => {
+  const iterate = (node, depth) => renderFunctions[node.type](node, depth, iterate);
+  return iterate(ast, 0);
+};
+
+export default renderAST;

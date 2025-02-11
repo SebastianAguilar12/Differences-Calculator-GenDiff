@@ -1,48 +1,56 @@
 import _ from 'lodash';
-
-export default function plain(diffObject) {
-  const iter = (element, parentPath = '') => {
-    if (!_.isObject(element)) {
-      return '';
-    }
-    const formatValue = (val) => {
-      if (_.isObject(val) && val !== null) return '[complex value]';
-      if (typeof val === 'string') return `'${val}'`;
-      return `${val}`;
-    };
-    const processKey = (key, acc, processedPaths) => {
-      const cleanKey = key.startsWith('+') || key.startsWith('-') ? key.slice(1).trim() : key;
-      const path = parentPath ? `${parentPath}.${cleanKey}` : cleanKey;
-      if (processedPaths.has(path)) {
-        return acc;
-      }
-      const value = element[key];
-      const keysArr = Object.keys(element);
-      if (key.startsWith('-')) {
-        const addKey = `+ ${cleanKey}`;
-        if (keysArr.includes(addKey)) {
-          const oldValue = value;
-          const newValue = element[addKey];
-          return [...acc, `Property '${path}' was updated. From ${formatValue(oldValue)} to ${formatValue(newValue)}`];
-        }
-        return [...acc, `Property '${path}' was removed`];
-      }
-      if (key.startsWith('+')) {
-        if (!keysArr.includes(`- ${cleanKey}`)) {
-          return [...acc, `Property '${path}' was added with value: ${formatValue(value)}`];
-        }
-        return acc;
-      }
-      if (_.isObject(value)) {
-        const nestedResult = iter(value, path);
-        return nestedResult ? [...acc, nestedResult] : acc;
-      }
-      return acc;
-    };
-    return Object.keys(element)
-      .reduce((acc, key) => processKey(key, acc, new Set()), [])
-      .filter(Boolean)
-      .join('\n');
-  };
-  return iter(diffObject);
+import {
+  ROOT_VALUE,
+  NESTED_VALUE,
+  ADD_VALUE,
+  DELETED_VALUE,
+  CHANGED_VALUE,
+  UNCHANGED_VALUE,
 }
+  from '../constants.js';
+
+const makeKeyPath = (key, parentKey = '') => {
+  if (!parentKey) return `${key}`;
+  return `${parentKey}.${key}`;
+};
+
+const makeString = (value) => {
+  if (_.isString(value)) return `'${value}'`;
+  return `${value}`;
+};
+
+const renderFunctions = {
+  [ROOT_VALUE]: ({ children }, parentKey, formatPath) => {
+    const formattedChildren = children.flatMap((child) => formatPath(child, parentKey, formatPath));
+    return `${formattedChildren.join('\n')}`.trim();
+  },
+  [NESTED_VALUE]: ({ key, children }, parentKey, formatPath) => {
+    const keyPath = makeKeyPath(key, parentKey);
+    const formattedChildren = children.flatMap((child) => formatPath(child, keyPath, formatPath));
+    return `${formattedChildren.join('\n')}`.trim();
+  },
+  [ADD_VALUE]: ({ key, value }, parentKey) => {
+    const keyPath = makeKeyPath(key, parentKey);
+    const formattedValue = _.isObject(value) ? '[complex value]' : makeString(value);
+    return `Property '${keyPath}' was added with value: ${formattedValue}`.trim();
+  },
+  [DELETED_VALUE]: ({ key }, parentKey) => {
+    const keyPath = makeKeyPath(key, parentKey);
+    return `Property '${keyPath}' was removed`.trim();
+  },
+  [CHANGED_VALUE]: ({ key, value1, value2 }, parentKey) => {
+    const keyPath = makeKeyPath(key, parentKey);
+    const formattedValue1 = value1 && _.isObject(value1) ? '[complex value]' : makeString(value1);
+    const formattedValue2 = value2 && _.isObject(value2) ? '[complex value]' : makeString(value2);
+    return `Property '${keyPath}' was updated. From ${formattedValue1} to ${formattedValue2}`.trim();
+  },
+  [UNCHANGED_VALUE]: () => [],
+};
+
+export default (ast) => {
+  const formatPath = (node, parentKey, pathFormat) => {
+    const formattedNode = renderFunctions[node.type](node, parentKey, pathFormat);
+    return Array.isArray(formattedNode) ? formattedNode : [formattedNode];
+  };
+  return formatPath(ast, '', formatPath).join('\n');
+};
