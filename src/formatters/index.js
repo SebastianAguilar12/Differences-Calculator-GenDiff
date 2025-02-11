@@ -10,7 +10,7 @@ export default function json(object) {
         children[index] = json(child);
       }
     });
-    return { children, type };
+    return JSON.stringify({ type, children });
   }
   return { type };
 }

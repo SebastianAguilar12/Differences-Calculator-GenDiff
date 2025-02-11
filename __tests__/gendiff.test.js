@@ -39,7 +39,7 @@ test('test .json files with json format', () => {
   const file1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const file2 = path.join(process.cwd(), '__fixtures__', 'file2.json');
   const twoFilesComparision = gendiff(file1, file2, 'json');
-  expect(twoFilesComparision).toStrictEqual(objectJSON);
+  expect(twoFilesComparision).toStrictEqual(JSON.stringify(objectJSON));
 });
 test('test .yml files with json format', () => {
   const objectYML = analyzeFile(path.join(process.cwd(), '__fixtures__', 'json-result.json'));
@@ -47,5 +47,5 @@ test('test .yml files with json format', () => {
   const file2 = path.join(process.cwd(), '__fixtures__', 'file2-y.yaml');
   const twoFilesComparision = gendiff(file1, file2, 'json');
   console.log(typeof objectYML);
-  expect(twoFilesComparision).toStrictEqual(objectYML);
+  expect(twoFilesComparision).toStrictEqual(JSON.stringify(objectYML));
 });
