@@ -34,7 +34,7 @@ test('testing .yml indent files with plain formatter', () => {
   const indentComparision = gendiff(indentYMLFile1, indentYMLFile2, 'plain').trim();
   expect(indentComparision).toEqual(normalizeLineEndings(expectedResult));
 });
-test('test .json files with json format', () => {
+test('.json should show json format', () => {
   const objectJSON = analyzeFile(path.join(process.cwd(), '__fixtures__', 'json-result.json'));
   const file1 = path.join(process.cwd(), '__fixtures__', 'file1.json');
   const file2 = path.join(process.cwd(), '__fixtures__', 'file2.json');

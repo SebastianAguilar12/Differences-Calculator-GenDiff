@@ -1,16 +1,40 @@
 import _ from 'lodash';
 
 export default function json(object) {
-  const { children, type } = object;
+  const {
+    children,
+    key,
+    type,
+    value,
+    value1,
+    value2,
+  } = object;
   if (children) {
-    children.forEach((child, index) => {
+    const updatedChildren = children.map((child) => {
       if (typeof child === 'string') {
-        children[index] = { type: 'text', value: child };
-      } else if (_.isObject(child) && Array.isArray(child)) {
-        children[index] = json(child);
+        return { type: 'text', value: child };
       }
+      if (_.isObject(child) && Array.isArray(child)) {
+        return json(child);
+      }
+      return child;
     });
-    return JSON.stringify({ type, children });
+    const resultObject = JSON.stringify({
+      key,
+      type,
+      value,
+      value1,
+      value2,
+      children: updatedChildren,
+    }, null, 0);
+    const cleanedResultObject = resultObject.replace(/\\"/g, '"');
+    return cleanedResultObject;
   }
-  return { type };
+  return {
+    key,
+    type,
+    value,
+    value1,
+    value2,
+  };
 }
