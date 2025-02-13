@@ -41,7 +41,7 @@ test('.json should show json format', () => {
   const twoFilesComparision = gendiff(file1, file2, 'json');
   expect(twoFilesComparision).toStrictEqual(JSON.stringify(objectJSON));
 });
-test('test .yml files with json format', () => {
+test('.yml files with json format', () => {
   const objectYML = analyzeFile(path.join(process.cwd(), '__fixtures__', 'json-result.json'));
   const file1 = path.join(process.cwd(), '__fixtures__', 'file1-y.yaml');
   const file2 = path.join(process.cwd(), '__fixtures__', 'file2-y.yaml');
